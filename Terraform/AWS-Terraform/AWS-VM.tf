@@ -7,26 +7,29 @@ terraform {
   }
 }
 provider "aws" {
-  alias = "virginia"
-  region = "us-east-1"  # Región de Virginia
+  alias  = "virginia"
+  region = "us-east-1" # Región de Virginia
 }
 ################## VPC VIRGINIA ##################
 resource "aws_vpc" "vpc_virginia" {
-  provider = aws.virginia
+  provider   = aws.virginia
   cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "VPC_Virginia"
+  }
 }
 
 ################## INTERNET GATEWAY ##################
 resource "aws_internet_gateway" "internet_gateway_virginia" {
   provider = aws.virginia
-  vpc_id = aws_vpc.vpc_virginia.id
+  vpc_id   = aws_vpc.vpc_virginia.id
   tags = {
-    Name = "main_virginia" 
+    Name = "Internet_Gateway"
   }
 }
 ################## SUBNET VIRGINIA ##################
 resource "aws_subnet" "subnet_virginia" {
-  provider = aws.virginia
+  provider          = aws.virginia
   vpc_id            = aws_vpc.vpc_virginia.id
   cidr_block        = "10.0.0.0/16"
   availability_zone = "us-east-1a"
@@ -35,7 +38,7 @@ resource "aws_subnet" "subnet_virginia" {
 resource "aws_route_table" "route_table_virginia_public" {
   vpc_id = aws_vpc.vpc_virginia.id
   tags = {
-    Name = "route_table_oregon"
+    Name = "Route_table_Virginia"
   }
   route {
     cidr_block = "10.0.0.0/16"
@@ -49,16 +52,17 @@ resource "aws_route_table" "route_table_virginia_public" {
 }
 
 ################## ROUTE TABLE WITH SUBNET ##################
-resource "aws_route_table_association" "a" {
+resource "aws_route_table_association" "virginia_rt_1" {
   subnet_id      = aws_subnet.subnet_virginia.id
   route_table_id = aws_route_table.route_table_virginia_public.id
 }
 
-/* ################## MAIN ASSOCIATION ##################
-resource "aws_main_route_table_association" "main" {
+################## MAIN ASSOCIATION ##################
+resource "aws_main_route_table_association" "main_virginia" {
+  provider = aws.virginia
   vpc_id         = aws_vpc.vpc_virginia.id
   route_table_id = aws_route_table.route_table_virginia_public.id
-} */
+}
 
 
 /* resource "aws_instance" "instance_virginia" {
@@ -75,32 +79,41 @@ resource "aws_main_route_table_association" "main" {
 
 
 provider "aws" {
-  alias = "oregon"
-  region = "us-west-2"  # Región de Oregon
+  alias  = "oregon"
+  region = "us-west-2" # Región de Oregon
 }
 
+################## VPC VIRGINIA ##################
 resource "aws_vpc" "vpc_oregon" {
-  provider = aws.oregon
+  provider   = aws.oregon
   cidr_block = "10.1.0.0/16"
-}
-resource "aws_internet_gateway" "internet_gateway_oregon" {
-  provider = aws.oregon
-  vpc_id = aws_vpc.vpc_oregon.id
   tags = {
-      Name = "main_oregon"
+    Name = "VPC_Oregon"
   }
 }
-resource "aws_subnet" "subnet_oregon" {
+################## INTERNET GATEWAY ##################
+resource "aws_internet_gateway" "internet_gateway_oregon" {
   provider = aws.oregon
+  vpc_id   = aws_vpc.vpc_oregon.id
+  tags = {
+    Name = "Internet_Gataway_Oregon"
+  }
+}
+################## SUBNET OREGON ##################
+resource "aws_subnet" "subnet_oregon" {
+  provider          = aws.oregon
   vpc_id            = aws_vpc.vpc_oregon.id
   cidr_block        = "10.1.0.0/16"
   availability_zone = "us-west-2a"
 }
 
-
-resource "aws_route_table" "aws_route_table_oregon" {
+################## ROUTE TABLE ##################
+resource "aws_route_table" "route_table_oregon_public" {
   provider = aws.oregon
-  vpc_id = aws_vpc.vpc_oregon.id
+  vpc_id   = aws_vpc.vpc_oregon.id
+  tags = {
+    Name = "Route_table_Oregon"
+  }
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.internet_gateway_oregon.id
@@ -110,6 +123,21 @@ resource "aws_route_table" "aws_route_table_oregon" {
     gateway_id = "local"
   }
 }
+
+################## ROUTE TABLE WITH SUBNET ##################
+resource "aws_route_table_association" "oregon_rt_1" {
+  provider = aws.oregon
+  subnet_id      = aws_subnet.subnet_oregon.id
+  route_table_id = aws_route_table.route_table_oregon_public.id
+}
+
+################## MAIN ASSOCIATION ##################
+resource "aws_main_route_table_association" "main_oregon" {
+  provider = aws.oregon
+  vpc_id         = aws_vpc.vpc_oregon.id
+  route_table_id = aws_route_table.route_table_oregon_public.id
+}
+
 /* resource "aws_instance" "instance_oregon" {
   provider = aws.oregon
   ami             = "ami-01175fe07368af8c6"  # ID de la AMI de Windows Server 2012
