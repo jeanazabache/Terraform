@@ -31,7 +31,7 @@ resource "aws_internet_gateway" "internet_gateway_virginia" {
 resource "aws_subnet" "subnet_virginia" {
   provider          = aws.virginia
   vpc_id            = aws_vpc.vpc_virginia.id
-  cidr_block        = "10.0.0.0/16"
+  cidr_block        = "10.0.0.1/24"
   availability_zone = "us-east-1a"
 }
 ################## ROUTE TABLE ##################
