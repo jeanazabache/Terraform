@@ -1,0 +1,2 @@
+bucket         = "dev-vtst-terraform-state-s3"
+dynamodb_table = "dev-vtst-terraform-locks"

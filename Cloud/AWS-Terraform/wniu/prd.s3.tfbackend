@@ -1,0 +1,2 @@
+bucket         = "prd-apsc-terraform-state-s3"
+dynamodb_table = "prd-apsc-terraform-locks"

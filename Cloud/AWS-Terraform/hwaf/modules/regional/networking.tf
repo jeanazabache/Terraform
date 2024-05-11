@@ -1,0 +1,19 @@
+module "vpc" {
+  source                             = "git::ssh://git@bitbucket.org/VisaNet_TI/platform-module-networking.git?ref=2.3.0"
+  vpc_name                           = "${var.env}-${var.project}-${var.vpc_name}"
+  enable_dns_hostnames               = var.vpc_enable_dns_support
+  enable_dns_support                 = var.vpc_enable_dns_hostnames
+  cidr                               = var.vpc_cidr
+  azs                                = var.vpc_azs
+  private_subnets                    = var.vpc_private_subnets
+  public_subnets                     = var.vpc_public_subnets
+  database_subnets                   = var.vpc_database_subnets
+  create_database_subnet_group       = true
+  create_database_subnet_route_table = true
+  enable_nat_gateway                 = var.vpc_enable_nat_gateway
+  enable_vpn_gateway                 = var.vpc_enable_vpn_gateway
+  one_nat_gateway_per_az             = var.vpc_one_nat_gateway_per_az
+  single_nat_gateway                 = var.vpc_single_nat_gateway
+  transit_gateway_routes             = var.vpc_transit_gateway_routes
+  tags_project                       = local.tags
+}
