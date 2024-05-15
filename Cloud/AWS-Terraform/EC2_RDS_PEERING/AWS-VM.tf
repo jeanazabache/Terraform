@@ -114,14 +114,14 @@ resource "aws_internet_gateway" "internet_gateway_oregon" {
     Name = "Internet_Gataway_Oregon"
   }
 }
-################## SUBNET-1 OREGON ##################
+################## SUBNET 1 OREGON ##################
 resource "aws_subnet" "subnet_1_oregon" {
   provider          = aws.oregon
   vpc_id            = aws_vpc.vpc_oregon.id
   cidr_block        = "10.1.0.0/24"
   availability_zone = "us-west-2a"
 }
-################## SUBNET-2 OREGON ##################
+################## SUBNET 2 OREGON ##################
 resource "aws_subnet" "subnet_2_oregon" {
   provider          = aws.oregon
   vpc_id            = aws_vpc.vpc_oregon.id
