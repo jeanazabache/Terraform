@@ -100,7 +100,7 @@ resource "aws_instance" "web_server" {
   ami             = "ami-04b70fa74e45c3917"  # ID de la AMI de Ubuntu
   instance_type   = "t3.medium"
   associate_public_ip_address = true # IP Pública
-  key_name        = "ec2keypair"
+  key_name        = "ec2-keypair"
   subnet_id       = aws_subnet.subnet_1_virginia.id
   vpc_security_group_ids = [ aws_security_group.ec2_sg.id ]
 }
@@ -242,17 +242,33 @@ resource "aws_db_instance" "db-postgres" {
 }
 
 
-
-
-/* resource "aws_instance" "instance_oregon" {
+resource "aws_instance" "instance_oregon" {
   provider = aws.oregon
   ami             = "ami-01175fe07368af8c6"  # ID de la AMI de Windows Server 2012
   instance_type   = "t3.medium"
   associate_public_ip_address = true # IP Pública
-  subnet_id       = aws_subnet.subnet_oregon.id
-  key_name = "keypair_oregon"
+  subnet_id       = aws_subnet.subnet_1_oregon.id
+  key_name        = "keypair_oregon"
+  vpc_security_group_ids = [ aws_security_group.windows_server_sg.id ]
 }
- */
+
+################## SEGURITY GROUPS ##################
+resource "aws_security_group" "windows_server_sg" {
+  provider = aws.oregon
+  name     = "windows_server_security_group"
+  vpc_id   = aws_vpc.vpc_oregon.id
+
+  ingress {
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "windows-server-security-group"
+  }
+}
+
 /* # Peering connection
 resource "aws_vpc_peering_connection" "vpc_peering" {
   vpc_id                 = aws_vpc.vpc_virginia.id
