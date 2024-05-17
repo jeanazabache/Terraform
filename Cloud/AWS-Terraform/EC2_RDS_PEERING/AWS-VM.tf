@@ -122,7 +122,10 @@ resource "aws_vpc" "vpc_oregon" {
   tags = {
     Name = "VPC_Oregon"
   }
+  # Enable DNS hostnames for the VPC
+  enable_dns_hostnames = true
 }
+
 ################## INTERNET GATEWAY ##################
 resource "aws_internet_gateway" "internet_gateway_oregon" {
   provider = aws.oregon
@@ -131,6 +134,8 @@ resource "aws_internet_gateway" "internet_gateway_oregon" {
     Name = "Internet_Gataway_Oregon"
   }
 }
+
+
 ################## SUBNET 1 OREGON ##################
 resource "aws_subnet" "subnet_1_oregon" {
   provider          = aws.oregon
@@ -219,6 +224,12 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "rds-security-group"
   }
@@ -239,6 +250,29 @@ resource "aws_db_instance" "db-postgres" {
 
   db_subnet_group_name   = aws_db_subnet_group.gs-oregon.id
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
+
+  # Add configuration for remote connection
+  publicly_accessible = true # Allow remote access
+}
+################## DATA BASE RDS - POSTGRES ##################
+resource "aws_db_instance" "db-mysql" {
+  provider             = aws.oregon
+  allocated_storage    = 10
+  identifier           = "mysql"
+  db_name              = "my_db_mysql"
+  engine               = "mysql"
+  engine_version       = "8.0.35"
+  instance_class       = "db.t3.medium"
+  username             = "db_mysql"
+  password             = "password"
+  parameter_group_name = "default.mysql8.0"
+  skip_final_snapshot  = true
+
+  db_subnet_group_name   = aws_db_subnet_group.gs-oregon.id
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+
+  # Add configuration for remote connection
+  publicly_accessible = true # Allow remote access
 }
 
 
