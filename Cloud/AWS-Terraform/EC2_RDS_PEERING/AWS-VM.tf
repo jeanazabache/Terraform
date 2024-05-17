@@ -182,7 +182,7 @@ resource "aws_main_route_table_association" "main_oregon" {
 ################## GROUP SUBNETS RDS ##################
 resource "aws_db_subnet_group" "gs-oregon" {
   provider = aws.oregon
-  name = "my-db-subnet-group"
+  name     = "my-db-subnet-group"
 
   subnet_ids = [
     aws_subnet.subnet_1_oregon.id,
@@ -193,20 +193,24 @@ resource "aws_db_subnet_group" "gs-oregon" {
 ################## SEGURITY GROUPS ##################
 resource "aws_security_group" "rds_sg" {
   provider = aws.oregon
-  name = "rds-security-group"
-  vpc_id = aws_vpc.vpc_oregon.id
+  name     = "rds-security-group"
+  vpc_id   = aws_vpc.vpc_oregon.id
 
   ingress {
-    from_port = 3306
-    to_port = 3306
-    protocol = "tcp"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "rds-security-group"
   }
 }
 ################## DATA BASE RDS - POSTGRES ##################
 resource "aws_db_instance" "db-postgres" {
-  provider = aws.oregon
+  provider             = aws.oregon
   allocated_storage    = 10
+  identifier           = "postgresql"
   db_name              = "my_db_postgres"
   engine               = "postgres"
   engine_version       = "16.2"
@@ -216,7 +220,7 @@ resource "aws_db_instance" "db-postgres" {
   parameter_group_name = "default.postgres16"
   skip_final_snapshot  = true
 
-  db_subnet_group_name = aws_db_subnet_group.gs-oregon.id
+  db_subnet_group_name   = aws_db_subnet_group.gs-oregon.id
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
 }
 
