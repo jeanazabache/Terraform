@@ -40,7 +40,7 @@ resource "aws_subnet" "subnet_2_virginia" {
   provider          = aws.virginia
   vpc_id            = aws_vpc.vpc_virginia.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
+  availability_zone = "us-east-1b"
 }
 ################## ROUTE TABLE ##################
 resource "aws_route_table" "route_table_virginia_public" {
@@ -126,7 +126,15 @@ resource "aws_subnet" "subnet_2_oregon" {
   provider          = aws.oregon
   vpc_id            = aws_vpc.vpc_oregon.id
   cidr_block        = "10.1.1.0/24"
-  availability_zone = "us-west-2a"
+  availability_zone = "us-west-2b"
+}
+
+################## SUBNET 3 OREGON ##################
+resource "aws_subnet" "subnet_3_oregon" {
+  provider          = aws.oregon
+  vpc_id            = aws_vpc.vpc_oregon.id
+  cidr_block        = "10.1.2.0/24"
+  availability_zone = "us-west-2c"
 }
 ################## ROUTE TABLE ##################
 resource "aws_route_table" "route_table_oregon_public" {
@@ -145,18 +153,25 @@ resource "aws_route_table" "route_table_oregon_public" {
   }
 }
 
-################## ROUTE TABLE WITH SUBNET ##################
+################## ROUTE 1 TABLE WITH SUBNET ##################
 resource "aws_route_table_association" "oregon_rt_1" {
   provider = aws.oregon
   subnet_id      = aws_subnet.subnet_1_oregon.id
   route_table_id = aws_route_table.route_table_oregon_public.id
 }
-################## ROUTE TABLE WITH SUBNET ##################
+################## ROUTE 2 TABLE WITH SUBNET ##################
 resource "aws_route_table_association" "oregon_rt_2" {
   provider = aws.oregon
   subnet_id      = aws_subnet.subnet_2_oregon.id
   route_table_id = aws_route_table.route_table_oregon_public.id
 }
+################## ROUTE 3 TABLE WITH SUBNET ##################
+resource "aws_route_table_association" "oregon_rt_3" {
+  provider = aws.oregon
+  subnet_id      = aws_subnet.subnet_3_oregon.id
+  route_table_id = aws_route_table.route_table_oregon_public.id
+}
+
 ################## MAIN ASSOCIATION ##################
 resource "aws_main_route_table_association" "main_oregon" {
   provider = aws.oregon
