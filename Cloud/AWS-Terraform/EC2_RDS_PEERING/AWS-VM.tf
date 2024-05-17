@@ -79,15 +79,32 @@ resource "aws_main_route_table_association" "main_virginia" {
   route_table_id = aws_route_table.route_table_virginia_public.id
 }
 
-
-/* resource "aws_instance" "instance_virginia" {
+################## SEGURITY GROUPS ##################
+resource "aws_security_group" "ec2_sg" {
   provider = aws.virginia
-  ami             = "ami-051f8a213df8bc089"  # ID de la AMI de Ubuntu
+  name     = "ec2-security-group"
+  vpc_id   = aws_vpc.vpc_virginia.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "ec2-security-group"
+  }
+}
+resource "aws_instance" "web_server" {
+  provider = aws.virginia
+  ami             = "ami-04b70fa74e45c3917"  # ID de la AMI de Ubuntu
   instance_type   = "t3.medium"
   associate_public_ip_address = true # IP Pública
-  subnet_id       = aws_subnet.subnet_virginia.id
-  key_name = "keypair_virginia"
-} */
+  key_name        = "ec2keypair"
+  subnet_id       = aws_subnet.subnet_1_virginia.id
+  vpc_security_group_ids = [ aws_security_group.ec2_sg.id ]
+}
+
 
 ################################################################################################################################################
 
@@ -197,8 +214,8 @@ resource "aws_security_group" "rds_sg" {
   vpc_id   = aws_vpc.vpc_oregon.id
 
   ingress {
-    from_port   = 3306
-    to_port     = 3306
+    from_port   = 5432
+    to_port     = 5432
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
