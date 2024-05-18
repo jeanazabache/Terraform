@@ -17,6 +17,8 @@ resource "aws_vpc" "vpc_virginia" {
   tags = {
     Name = "VPC_Virginia"
   }
+  # Enable DNS hostnames for the VPC
+  enable_dns_hostnames = true
 }
 
 ################## INTERNET GATEWAY ##################
@@ -88,6 +90,18 @@ resource "aws_security_group" "ec2_sg" {
   ingress {
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -219,12 +233,6 @@ resource "aws_security_group" "rds_sg" {
   vpc_id   = aws_vpc.vpc_oregon.id
 
   ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
     from_port   = 3336
     to_port     = 3336
     protocol    = "tcp"
@@ -236,11 +244,18 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  egress {
+    from_port   = 3336
+    to_port     = 3336
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
   tags = {
     Name = "rds-security-group"
   }
 }
-################## DATA BASE RDS - POSTGRES ##################
+/* ################## DATA BASE RDS - POSTGRES ##################
 resource "aws_db_instance" "db-postgres" {
   provider             = aws.oregon
   allocated_storage    = 10
@@ -259,8 +274,9 @@ resource "aws_db_instance" "db-postgres" {
 
   # Add configuration for remote connection
   publicly_accessible = true # Allow remote access
-}
-################## DATA BASE RDS - POSTGRES ##################
+} */
+
+################## DATA BASE RDS - mySQL ##################
 resource "aws_db_instance" "db-mysql" {
   provider             = aws.oregon
   allocated_storage    = 10
