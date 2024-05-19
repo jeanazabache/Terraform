@@ -88,23 +88,18 @@ resource "aws_security_group" "ec2_sg" {
   vpc_id   = aws_vpc.vpc_virginia.id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
+  egress {
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  
   tags = {
     Name = "ec2-security-group"
   }
@@ -120,10 +115,11 @@ resource "aws_instance" "web_server" {
 }
 
 
-################################################################################################################################################
+#################################################### SEGUNDA REGION - OREGON  ###############################################
 
 
 
+################## PROVIDER AWS OREGON ##################
 provider "aws" {
   alias  = "oregon"
   region = "us-west-2" # Región de Oregon
@@ -233,24 +229,18 @@ resource "aws_security_group" "rds_sg" {
   vpc_id   = aws_vpc.vpc_oregon.id
 
   ingress {
-    from_port   = 3336
-    to_port     = 3336
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
-    from_port   = 3336
-    to_port     = 3336
-    protocol    = "tcp"
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = {
     Name = "rds-security-group"
   }
@@ -304,7 +294,7 @@ resource "aws_instance" "instance_oregon" {
   instance_type   = "t3.medium"
   associate_public_ip_address = true # IP Pública
   subnet_id       = aws_subnet.subnet_1_oregon.id
-  key_name        = "keypair_oregon"
+  key_name        = "ec2-ws-keypair"
   vpc_security_group_ids = [ aws_security_group.windows_server_sg.id ]
 }
 
@@ -325,9 +315,16 @@ resource "aws_security_group" "windows_server_sg" {
   }
 }
 
-/* # Peering connection
+# Peering connection
 resource "aws_vpc_peering_connection" "vpc_peering" {
-  vpc_id                 = aws_vpc.vpc_virginia.id
-  peer_vpc_id            = aws_vpc.vpc_oregon.id
-  auto_accept            = true
-} */
+  vpc_id                 = aws.virginia.aws_vpc.vpc_virginia.id
+  peer_vpc_id            = aws.oregon.aws_vpc.vpc_oregon.id
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true
+  }
+
+  requester {
+    allow_remote_vpc_dns_resolution = true
+  }
+}
