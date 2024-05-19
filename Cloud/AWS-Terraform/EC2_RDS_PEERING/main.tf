@@ -109,9 +109,13 @@ resource "aws_instance" "web_server" {
   ami             = "ami-04b70fa74e45c3917"  # ID de la AMI de Ubuntu
   instance_type   = "t3.medium"
   associate_public_ip_address = true # IP Pública
-  key_name        = "ec2-keypair"
+  key_name        = var.keypair_virginia
   subnet_id       = aws_subnet.subnet_1_virginia.id
   vpc_security_group_ids = [ aws_security_group.ec2_sg.id ]
+
+  tags = {
+    Name = var.instance_name
+  }
 }
 
 
@@ -294,14 +298,14 @@ resource "aws_instance" "instance_oregon" {
   instance_type   = "t3.medium"
   associate_public_ip_address = true # IP Pública
   subnet_id       = aws_subnet.subnet_1_oregon.id
-  key_name        = "ec2-ws-keypair"
+  key_name        = var.keypair_oregon
   vpc_security_group_ids = [ aws_security_group.windows_server_sg.id ]
 }
 
 ################## SEGURITY GROUPS ##################
 resource "aws_security_group" "windows_server_sg" {
   provider = aws.oregon
-  name     = "windows_server_security_group"
+  name     = var.windows_server_sg
   vpc_id   = aws_vpc.vpc_oregon.id
 
   ingress {
@@ -311,20 +315,7 @@ resource "aws_security_group" "windows_server_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name = "windows-server-security-group"
+    name = var.windows_server_sg
   }
 }
 
-# Peering connection
-resource "aws_vpc_peering_connection" "vpc_peering" {
-  vpc_id                 = aws.virginia.aws_vpc.vpc_virginia.id
-  peer_vpc_id            = aws.oregon.aws_vpc.vpc_oregon.id
-
-  accepter {
-    allow_remote_vpc_dns_resolution = true
-  }
-
-  requester {
-    allow_remote_vpc_dns_resolution = true
-  }
-}
