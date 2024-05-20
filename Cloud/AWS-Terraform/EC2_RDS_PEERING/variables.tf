@@ -7,10 +7,7 @@
 ################################################################
 #                       EC2
 ################################################################
-variable "instance_name" {
-  description = "Nombre de instancia"
-  type = string
-}
+
 variable "instance_amis" {
   type = map(string)
 
@@ -39,6 +36,7 @@ variable "name_instance" {
 variable "windows_server_sg" {
   description = "Nombre de virtual machine windows"
   type = string
+  default = "Segurity Group Instance"
 }
 variable "type_instance" {
   type = string
@@ -54,3 +52,7 @@ variable "password" {
 ################################################################
 #                       VPC
 ################################################################
+variable "name_accepter_region" {
+  type    = string
+  default = "us-west-2"
+}
