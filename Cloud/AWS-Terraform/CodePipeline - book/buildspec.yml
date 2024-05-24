@@ -1,0 +1,10 @@
+version: 0.2
+phases:
+  build:
+    commands:
+    - zip -r book.zip index.mjs
+    - aws s3 cp book.zip s3://my-bucket-lambda-book
+    
+  post_build:
+    commands:
+    - aws lambda update-function-code --function-name function-book --s3-bucket my-bucket-lambda-book --s3-key book.zip
