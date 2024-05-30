@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
 }
 ################## INTERNET GATEWAY ##################
-resource "aws_internet_gateway" "internet_gateway_virginia" {
+resource "aws_internet_gateway" "internet_gateway" {
   vpc_id   = aws_vpc.vpc.id
 
   tags = {
@@ -81,7 +81,7 @@ resource "aws_route_table" "route_table_virginia_public" {
   }
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.internet_gateway_virginia.id
+    gateway_id = aws_internet_gateway.internet_gateway.id
   }
 }
 
@@ -144,6 +144,7 @@ resource "aws_route_table_association" "rt-PRIVADO_4" {
   subnet_id = aws_subnet.subnet_private_4.id
   route_table_id = aws_route_table.route_table_virginia_privado.id
 }
+
 
 /* //  required subnets and their configurations
 variable "required_subnets" {
