@@ -1,5 +1,5 @@
 ################## EC2 - UBUNTU ##################
-resource "aws_instance" "web_server" {
+resource "aws_instance" "server_linux" {
   provider = aws.virginia
   ami             = var.instance_amis["instance1"] # ID de la AMI de Ubuntu
   instance_type   = var.type_instance
@@ -14,7 +14,7 @@ resource "aws_instance" "web_server" {
 }
 
 ################## EC2 - WINDOWS SERVER - Orregon ##################
-resource "aws_instance" "windows_server_oregon" {
+resource "aws_instance" "server_windows" {
   provider = aws.oregon
   ami             = var.instance_amis["instance2"]  # ID de la AMI de Windows Server 2012
   instance_type   = var.type_instance
