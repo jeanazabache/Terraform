@@ -13,8 +13,8 @@ resource "aws_instance" "web_server" {
   }
 }
 
-################## EC2 - WINDOWS SERVER ##################
-resource "aws_instance" "instance_oregon" {
+################## EC2 - WINDOWS SERVER - Orregon ##################
+resource "aws_instance" "windows_server_oregon" {
   provider = aws.oregon
   ami             = var.instance_amis["instance2"]  # ID de la AMI de Windows Server 2012
   instance_type   = var.type_instance
@@ -26,3 +26,4 @@ resource "aws_instance" "instance_oregon" {
     Name =  var.name_instance["name2"]
   }
 }
+

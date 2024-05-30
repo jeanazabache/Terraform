@@ -1,5 +1,5 @@
 ################## DATA BASE RDS - POSTGRES ##################
-resource "aws_db_instance" "db-postgres" {
+/* resource "aws_db_instance" "db-postgres" {
   provider             = aws.oregon
   allocated_storage    = 10
   identifier           = "postgresql"
@@ -17,7 +17,7 @@ resource "aws_db_instance" "db-postgres" {
 
   # Add configuration for remote connection
   publicly_accessible = true # Allow remote access
-} 
+} */ 
 
 ################## DATA BASE RDS - mySQL ##################
 resource "aws_db_instance" "db-mysql" {
@@ -37,5 +37,5 @@ resource "aws_db_instance" "db-mysql" {
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
 
   # Add configuration for remote connection
-  publicly_accessible = true # Allow remote access
+  publicly_accessible = false # Allow remote access
 }
