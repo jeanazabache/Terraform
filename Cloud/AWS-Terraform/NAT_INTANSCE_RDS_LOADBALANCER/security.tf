@@ -75,7 +75,7 @@ resource "aws_security_group" "sg_server_ubuntu_private_1" {
     from_port   = "0"
     to_port     = "0"
     protocol    = "-1"
-    cidr_blocks = ["10.0.3.0/24"]
+    cidr_blocks = ["0.0.0.0/0"]
  }
 }
 
@@ -102,6 +102,6 @@ resource "aws_security_group" "sg_server_ubuntu_private_2" {
     from_port   = "0"
     to_port     = "0"
     protocol    = "-1"
-    cidr_blocks = ["10.0.4.0/24"]
+    cidr_blocks = ["0.0.0.0/0"]
  }   
 }

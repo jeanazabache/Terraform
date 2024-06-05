@@ -1,5 +1,5 @@
 ################## EC2 - NAT INSTANCE AMAZON LINUX ##################
-/* resource "aws_instance" "server_linux" {
+resource "aws_instance" "server_linux" {
   provider = aws.virginia
   ami             = var.instance_amis["instance-nat"] # ID de la AMI de Amazon Linux 
   instance_type   = var.type_instance
@@ -12,7 +12,7 @@
     Name = var.name_instance["name1"]
   }
 }
- */
+
 
 ################## EC2 - UBUNTU ##################
 resource "aws_instance" "server_ubuntu_1" {
