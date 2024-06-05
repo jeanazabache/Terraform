@@ -43,6 +43,10 @@ variable "type_instance" {
   description = "Tipo instancia de Web Server"
   default = "t3.medium"
 }
+
+################################################################
+#                       RDS
+################################################################
 variable "password" {
   type = string
   description = "Password de Base de Datos"

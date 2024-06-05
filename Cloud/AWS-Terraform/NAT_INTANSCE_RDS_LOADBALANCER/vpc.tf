@@ -195,3 +195,16 @@ resource "aws_route_table_association" "public" {
   subnet_id      = each.value.id
   route_table_id = aws_route_table.my_public_route_table.id
 } */
+
+
+
+################## GROUP SUBNETS RDS ##################
+resource "aws_db_subnet_group" "gs-virginia" {
+  provider = aws.virginia
+  name     = "my-db-subnet-group"
+
+  subnet_ids = [
+    aws_subnet.subnet_private_3.id,
+    aws_subnet.subnet_private_4.id,
+  ]
+}

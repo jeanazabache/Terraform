@@ -105,3 +105,25 @@ resource "aws_security_group" "sg_server_ubuntu_private_2" {
     cidr_blocks = ["0.0.0.0/0"]
  }   
 }
+
+
+
+resource "aws_security_group" "rds" {
+  tags = {
+    Name = "ec2-ubuntu-group_server_2"
+  }
+
+  vpc_id   = aws_vpc.vpc.id
+  ingress {
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+ }   
+}

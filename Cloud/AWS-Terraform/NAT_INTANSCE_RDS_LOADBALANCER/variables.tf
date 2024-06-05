@@ -37,3 +37,11 @@ variable "type_instance" {
   type = string 
   default = "t3.medium"
 }
+################################################################
+#                       RDS
+################################################################
+variable "password" {
+  type = string
+  description = "Password de Base de Datos"
+  default = "password"
+}
