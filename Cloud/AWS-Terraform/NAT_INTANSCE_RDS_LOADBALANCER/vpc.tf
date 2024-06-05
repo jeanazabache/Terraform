@@ -96,6 +96,11 @@ resource "aws_route_table" "route_table_virginia_privado" {
     cidr_block = "10.0.0.0/16"
     gateway_id = "local"
   }
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.nat_gw.id
+  }
 }
 ################## MAIN ASSOCIATION ##################
 resource "aws_main_route_table_association" "main" {
@@ -145,6 +150,22 @@ resource "aws_route_table_association" "rt-PRIVADO_4" {
   route_table_id = aws_route_table.route_table_virginia_privado.id
 }
 
+resource "aws_eip" "elastic_ip" {
+  domain   = "vpc"
+}
+
+resource "aws_nat_gateway" "nat_gw" {
+  allocation_id = aws_eip.elastic_ip.id
+  subnet_id     = aws_subnet.subnet_public_2.id
+
+  tags = {
+    Name = "NAT gateway"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.internet_gateway]
+}
 
 /* //  required subnets and their configurations
 variable "required_subnets" {
