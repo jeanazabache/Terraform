@@ -13,7 +13,6 @@ resource "aws_instance" "server_linux" {
   }
 }
 
-
 ################## EC2 - UBUNTU ##################
 resource "aws_instance" "server_ubuntu_1" {
   provider = aws.virginia
