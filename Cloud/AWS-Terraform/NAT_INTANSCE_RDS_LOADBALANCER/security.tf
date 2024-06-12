@@ -4,7 +4,7 @@ resource "aws_security_group" "sg_server_ubuntu_private_1" {
   tags = {
     Name = "sg-server_1"
   }
-  name     = "ec2-UBUNTU-group"
+  name     = "sg_server_1"
 
   vpc_id   = aws_vpc.vpc.id
 
@@ -29,6 +29,8 @@ resource "aws_security_group" "sg_server_ubuntu_private_2" {
     Name = "sg-server_2"
   }
 
+  name     = "sg_server_2"
+
   vpc_id   = aws_vpc.vpc.id
 
   ingress {
@@ -52,6 +54,8 @@ resource "aws_security_group" "rds" {
   tags = {
     Name = "sg-rds"
   }
+
+  name     = "sg_rds"
 
   vpc_id   = aws_vpc.vpc.id
   ingress {
