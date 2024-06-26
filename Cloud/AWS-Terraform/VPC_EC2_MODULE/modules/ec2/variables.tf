@@ -23,7 +23,11 @@ variable "instance_name" {
   type        = string
 }
 
-variable "key_name" {
-  description = "Nombre de la keypair"
+variable "name_instance_profile" {
+  description = "Nombre del perfil de instancia"
   type = string
+}
+variable "state_public_ip" {
+  description = "Estado de ip publica"
+  type = bool
 }
