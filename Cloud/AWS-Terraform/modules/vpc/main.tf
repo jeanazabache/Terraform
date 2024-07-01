@@ -20,7 +20,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 }
 
 ################## SUBNETS PUBLIC ##################
-resource "aws_subnet" "main" {
+resource "aws_subnet" "subnet_public" {
   count             = var.subnet_count_public
   vpc_id            = aws_vpc.main.id
   cidr_block        = element(var.subnets_cidr_public, count.index)
@@ -32,7 +32,7 @@ resource "aws_subnet" "main" {
 }
 
 ################## SUBNETS PRIVATE ##################
-resource "aws_subnet" "main" {
+resource "aws_subnet" "subnet_private" {
   count             = var.subnet_count_private
   vpc_id            = aws_vpc.main.id
   cidr_block        = element(var.subnets_cidr_private, count.index)
