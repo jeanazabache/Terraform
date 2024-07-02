@@ -15,6 +15,7 @@ module "iam" {
   source               = "git::git@github.com:jeanazabache/Modules.git//iam"
   name_role_iam        = var.name_role_iam
   aws_policy_integrate = var.aws_policy_integrate
+  
 }
 
 module "ec2" {
