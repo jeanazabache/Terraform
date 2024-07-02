@@ -9,7 +9,6 @@ module "vpc" {
   vpc_name           = var.vpc_name
   subnet_count       = var.subnet_count
   subnet_cidrs       = var.subnet_cidrs
-  
 }
 
 module "iam" {
