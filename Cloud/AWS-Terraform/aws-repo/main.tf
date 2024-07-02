@@ -26,7 +26,6 @@ module "ec2" {
   instance_name   = var.instance_name
   state_public_ip = var.state_public_ip
   subnet_id       = element(module.vpc.subnet_ids, 0)
-
   name_instance_profile = "ssm_instance_profile"
 }
 
