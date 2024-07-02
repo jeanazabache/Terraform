@@ -9,13 +9,13 @@ module "vpc" {
   vpc_name           = var.vpc_name
   subnet_count       = var.subnet_count
   subnet_cidrs       = var.subnet_cidrs
+  probando
 }
 
 module "iam" {
   source               = "git::git@github.com:jeanazabache/Modules.git//iam"
   name_role_iam        = var.name_role_iam
   aws_policy_integrate = var.aws_policy_integrate
-  
 }
 
 module "ec2" {
