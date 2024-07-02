@@ -3,23 +3,23 @@ provider "aws" {
 }
 
 module "vpc" {
-  source             = "git::https://github.com/jeanazabache/Terraform.git//Cloud/AWS-Terraform/modules/vpc"
+  source             = "git::https://github.com/jeanazabache/Modules.git//vpc"
   region             = var.region
   cidr_block         = var.cidr_block
   vpc_name           = var.vpc_name
   subnet_count       = var.subnet_count
   subnet_cidrs       = var.subnet_cidrs
-  availability_zones = var.availability_zones
+  
 }
 
 module "iam" {
-  source               = "git::https://github.com/jeanazabache/Terraform.git//Cloud/AWS-Terraform/modules/iam"
+  source               = "git::git@github.com:jeanazabache/Modules.git//iam"
   name_role_iam        = var.name_role_iam
   aws_policy_integrate = var.aws_policy_integrate
 }
 
 module "ec2" {
-  source          = "git::https://github.com/jeanazabache/Terraform.git//Cloud/AWS-Terraform/modules/ec2"
+  source          = "git::https://github.com/jeanazabache/Modules.git//ec2"
   region          = var.region
   ami             = var.ami
   instance_type   = var.instance_type
