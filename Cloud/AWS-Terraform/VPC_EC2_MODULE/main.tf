@@ -28,6 +28,7 @@ module "ec2" {
   subnet_id      = element(module.vpc.subnet_ids, 0)
   
   name_instance_profile = "ssm_instance_profile"
+  vpc_security_group_ids = module.security.vpc_security_group_ids
 }
 
 module "security" {

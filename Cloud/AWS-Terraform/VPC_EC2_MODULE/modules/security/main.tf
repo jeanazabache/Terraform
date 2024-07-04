@@ -1,19 +1,7 @@
-variable "security_group_rules" {
-  description = "List of security group rules"
-  type = list(object({
-    type                     = string
-    protocol                 = string
-    from_port                = number
-    to_port                  = number
-    cidr_blocks              = optional(list(string), [])
-    source_security_group    = optional(bool, false)
-  }))
-}
-
 resource "aws_security_group" "example" {
   name        = "example-sg"
   description = "Example security group"
-  vpc_id      = "vpc-123456"
+  vpc_id      = var.vpc_id
 
   dynamic "ingress" {
     for_each = [for rule in var.security_group_rules : rule if rule.type == "ingress"]

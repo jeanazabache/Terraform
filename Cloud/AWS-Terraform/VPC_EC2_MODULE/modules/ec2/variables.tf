@@ -31,3 +31,6 @@ variable "state_public_ip" {
   description = "Estado de ip publica"
   type = bool
 }
+variable "vpc_security_group_ids" {
+  type = string
+}
