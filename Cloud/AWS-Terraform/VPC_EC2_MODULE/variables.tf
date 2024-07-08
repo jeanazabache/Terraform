@@ -1,60 +1,23 @@
-variable "region" {
-  description = "The AWS region to use"
-  type        = string
-}
+variable "region" {}
 
-variable "cidr_block" {
-  description = "The CIDR block for the VPC"
-  type        = string
-}
+variable "cidr_block" {}
 
-variable "vpc_name" {
-  description = "The name of the VPC"
-  type        = string
-}
+variable "vpc_name" {}
 
-variable "subnet_count" {
-  description = "Number of subnets to create"
-  type        = number
-}
+variable "subnet_count" {}
 
-variable "subnet_cidrs" {
-  description = "List of CIDR blocks for the subnets"
-  type        = list(string)
-}
+variable "subnet_cidrs" {}
 
-variable "availability_zones" {
-  description = "List of availability zones for the subnets"
-  type        = list(string)
-}
+variable "availability_zones" {}
 
-variable "ami" {
-  description = "The AMI to use for the instance"
-  type        = string
-}
+variable "ami" {}
 
-variable "instance_type" {
-  description = "The instance type"
-  type        = string
-}
+variable "instance_type" {}
 
-variable "instance_name" {
-  description = "The name of the instance"
-  type        = string
-}
+variable "instance_name" {}
 
-######## IAM ####
-variable "name_role_iam" {
-  description = "Nombre del rol IAM"
-  type = string
-}
+variable "name_role_iam" {}
 
-variable "aws_policy_integrate" {
-  description = "Nombre de la politica integrada de AWS"
-  type = string
-}
+variable "aws_policy_integrate" {}
 
-variable "state_public_ip" {
-  description = "Estado de ip publica"
-  type = bool
-}
+variable "state_public_ip" {}
