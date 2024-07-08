@@ -17,7 +17,7 @@ resource "aws_iam_role" "ssm_role" {
     ]
   })
 }
-
+################## Attachment Policity al Role ##################
 resource "aws_iam_role_policy_attachment" "ssm_policy_attachment" {
   role       = aws_iam_role.ssm_role.name
   policy_arn = var.aws_policy_integrate
